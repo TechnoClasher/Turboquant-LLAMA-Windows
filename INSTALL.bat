@@ -89,20 +89,41 @@ xcopy /E /I /Y "%ALBEDO_DIR%\repo\bin\*" "%BIN_DIR%\" >nul
 echo Repo cloned OK >> "%ALBEDO_DIR%\install.log"
 
 :: ============================================================
-::  DOWNLOAD MODELS
+::  DOWNLOAD CUDA RUNTIME DLLS via official NVIDIA PyPI packages
 :: ============================================================
-powershell -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Now downloading AI models (~20GB total).`n`nThis will take a while. You can minimize this window.`nSetup will notify you when it''s done.', 'Albedo Setup', 'OK', 'Information')" >nul 2>&1
+echo Downloading CUDA runtime DLLs (from official NVIDIA packages)...
+python -m pip install nvidia-cublas-cu12 nvidia-cuda-runtime-cu12 --quiet
+python -c "import shutil, glob, os; bins = glob.glob(os.path.join(__import__('site').getsitepackages()[0], 'nvidia', 'cublas', 'bin', '*.dll')); [shutil.copy(f, r'%BIN_DIR%') for f in bins]; print('cublas DLLs copied:', [os.path.basename(f) for f in bins])"
+python -c "import shutil, glob, os; bins = glob.glob(os.path.join(__import__('site').getsitepackages()[0], 'nvidia', 'cuda_runtime', 'bin', '*.dll')); [shutil.copy(f, r'%BIN_DIR%') for f in bins]; print('cudart DLLs copied:', [os.path.basename(f) for f in bins])"
+echo CUDA DLLs OK >> "%ALBEDO_DIR%\install.log"
 
-echo Downloading model 1/3: Coding (OmniCoder 9B)...
-python -c "from huggingface_hub import hf_hub_download; hf_hub_download(repo_id='Ngixdev/OmniCoder-Qwen3.5-9B-Claude-4.6-Opus-Uncensored-v2-GGUF', filename='OmniCoder-Claude-uncensored-V2-Q4_K_M.gguf', local_dir='%MODELS_DIR%')"
+:: ============================================================
+::  DOWNLOAD MODELS (skip if already present)
+:: ============================================================
+powershell -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Now checking/downloading AI models (~20GB total).`n`nAlready downloaded models will be skipped.`nThis will take a while if downloading fresh. You can minimize this window.`nSetup will notify you when it''s done.', 'Albedo Setup', 'OK', 'Information')" >nul 2>&1
+
+if not exist "%MODELS_DIR%\OmniCoder-Claude-uncensored-V2-Q4_K_M.gguf" (
+    echo Downloading model 1/3: Coding (OmniCoder 9B)...
+    python -c "from huggingface_hub import hf_hub_download; hf_hub_download(repo_id='Ngixdev/OmniCoder-Qwen3.5-9B-Claude-4.6-Opus-Uncensored-v2-GGUF', filename='OmniCoder-Claude-uncensored-V2-Q4_K_M.gguf', local_dir='%MODELS_DIR%')"
+) else (
+    echo Model 1/3 already exists, skipping...
+)
 echo Model 1 OK >> "%ALBEDO_DIR%\install.log"
 
-echo Downloading model 2/3: Uncensored General (Qwen3.5 4B)...
-python -c "from huggingface_hub import hf_hub_download; hf_hub_download(repo_id='Ngixdev/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive', filename='Qwen3.5-4B-Uncensored-HauhauCS-Aggressive-Q8_0.gguf', local_dir='%MODELS_DIR%')"
+if not exist "%MODELS_DIR%\Qwen3.5-4B-Uncensored-HauhauCS-Aggressive-Q8_0.gguf" (
+    echo Downloading model 2/3: Uncensored General (Qwen3.5 4B)...
+    python -c "from huggingface_hub import hf_hub_download; hf_hub_download(repo_id='Ngixdev/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive', filename='Qwen3.5-4B-Uncensored-HauhauCS-Aggressive-Q8_0.gguf', local_dir='%MODELS_DIR%')"
+) else (
+    echo Model 2/3 already exists, skipping...
+)
 echo Model 2 OK >> "%ALBEDO_DIR%\install.log"
 
-echo Downloading model 3/3: Balanced General (Qwen3.5 9B)...
-python -c "from huggingface_hub import hf_hub_download; hf_hub_download(repo_id='bartowski/Qwen_Qwen3.5-9B-GGUF', filename='Qwen_Qwen3.5-9B-Q6_K.gguf', local_dir='%MODELS_DIR%')"
+if not exist "%MODELS_DIR%\Qwen_Qwen3.5-9B-Q6_K.gguf" (
+    echo Downloading model 3/3: Balanced General (Qwen3.5 9B)...
+    python -c "from huggingface_hub import hf_hub_download; hf_hub_download(repo_id='bartowski/Qwen_Qwen3.5-9B-GGUF', filename='Qwen_Qwen3.5-9B-Q6_K.gguf', local_dir='%MODELS_DIR%')"
+) else (
+    echo Model 3/3 already exists, skipping...
+)
 echo Model 3 OK >> "%ALBEDO_DIR%\install.log"
 
 :: ============================================================
