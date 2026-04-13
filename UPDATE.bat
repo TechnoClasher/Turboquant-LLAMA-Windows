@@ -62,7 +62,21 @@ if not exist "%MODELS_DIR%\Gemma-4-E4B-Uncensored-HauhauCS-Aggressive-Q6_K_P.ggu
 echo [3/5] Checking for Docker...
 docker --version >nul 2>&1
 if errorlevel 1 (
-    echo Docker not found. Installing Docker Desktop...
+    echo Docker not found. Saving DNS settings before installing...
+
+    :: Save current DNS settings so Docker cannot wipe them
+    powershell -Command "
+        \$adapters = Get-NetAdapter | Where-Object { \$_.Status -eq 'Up' }
+        foreach (\$a in \$adapters) {
+            \$dns = (Get-DnsClientServerAddress -InterfaceIndex \$a.InterfaceIndex -AddressFamily IPv4).ServerAddresses
+            if (\$dns) {
+                \$dns -join ',' | Out-File -FilePath \"%TEMP%\albedo_dns_\$(\$a.InterfaceIndex).txt\" -Encoding ASCII -NoNewline
+                Write-Host \"Saved DNS for \$(\$a.Name): \$(\$dns -join ', ')\"
+            }
+        }
+    "
+
+    echo Installing Docker Desktop...
     winget install --id Docker.DockerDesktop -e --source winget --accept-package-agreements --accept-source-agreements
     if errorlevel 1 (
         echo.
@@ -72,8 +86,22 @@ if errorlevel 1 (
         pause
         exit /b 1
     )
+
+    :: Restore DNS settings
+    echo Restoring DNS settings...
+    powershell -Command "
+        \$files = Get-ChildItem '%TEMP%' -Filter 'albedo_dns_*.txt'
+        foreach (\$f in \$files) {
+            \$idx = \$f.BaseName -replace 'albedo_dns_',''
+            \$dns = (Get-Content \$f.FullName) -split ','
+            Set-DnsClientServerAddress -InterfaceIndex \$idx -ServerAddresses \$dns
+            Write-Host \"Restored DNS for adapter \$idx: \$(\$dns -join ', ')\"
+            Remove-Item \$f.FullName
+        }
+    "
+
     echo.
-    echo Docker Desktop installed.
+    echo Docker Desktop installed and DNS restored.
     echo IMPORTANT: You need to restart your computer, then run this updater again to finish setup.
     powershell -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Docker Desktop was just installed.`n`nYou MUST restart your computer and then run UPDATE.bat again to finish the setup.', 'Restart Required', 'OK', 'Warning')" >nul 2>&1
     pause
