@@ -169,7 +169,7 @@ echo powershell -Command "Start-Sleep 8"
 echo echo Starting Vane interface...
 echo docker run -d --rm -p 3000:3000 -v vane-data:/home/vane/data --add-host=host.docker.internal:host-gateway --name albedo-vane itzcrazykns1337/vane:latest >nul 2^>^&1
 echo docker start albedo-vane >nul 2^>^&1
-echo powershell -Command "Start-Sleep 5"
+echo powershell -Command "Start-Sleep 15"
 echo start http://127.0.0.1:3000
 echo echo.
 echo echo Albedo is running! Close this window to stop everything.
@@ -192,7 +192,7 @@ echo powershell -Command "Start-Sleep 8"
 echo echo Starting Vane interface...
 echo docker run -d --rm -p 3000:3000 -v vane-data:/home/vane/data --add-host=host.docker.internal:host-gateway --name albedo-vane itzcrazykns1337/vane:latest >nul 2^>^&1
 echo docker start albedo-vane >nul 2^>^&1
-echo powershell -Command "Start-Sleep 5"
+echo powershell -Command "Start-Sleep 15"
 echo start http://127.0.0.1:3000
 echo echo.
 echo echo Albedo is running! Close this window to stop everything.
@@ -215,7 +215,7 @@ echo powershell -Command "Start-Sleep 8"
 echo echo Starting Vane interface...
 echo docker run -d --rm -p 3000:3000 -v vane-data:/home/vane/data --add-host=host.docker.internal:host-gateway --name albedo-vane itzcrazykns1337/vane:latest >nul 2^>^&1
 echo docker start albedo-vane >nul 2^>^&1
-echo powershell -Command "Start-Sleep 5"
+echo powershell -Command "Start-Sleep 15"
 echo start http://127.0.0.1:3000
 echo echo.
 echo echo Albedo is running! Close this window to stop everything.
@@ -238,7 +238,7 @@ echo powershell -Command "Start-Sleep 8"
 echo echo Starting Vane interface...
 echo docker run -d --rm -p 3000:3000 -v vane-data:/home/vane/data --add-host=host.docker.internal:host-gateway --name albedo-vane itzcrazykns1337/vane:latest >nul 2^>^&1
 echo docker start albedo-vane >nul 2^>^&1
-echo powershell -Command "Start-Sleep 5"
+echo powershell -Command "Start-Sleep 15"
 echo start http://127.0.0.1:3000
 echo echo.
 echo echo Albedo is running! Close this window to stop everything.
