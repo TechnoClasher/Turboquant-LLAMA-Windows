@@ -1,5 +1,5 @@
 @echo off
-setlocal enabledelayedexpansion
+setlocal disabledelayedexpansion
 title Albedo Upgrade
 
 powershell -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Albedo Upgrade`n`nThis will:`n  - Download new Gemma 4B model (~6GB)`n  - Install llama-swap (smart model switcher)`n  - Install Open WebUI (skills, artifacts, web search)`n`nYour existing models will NOT be deleted.`nMake sure no AI is currently running.', 'Albedo Upgrade', 'OK', 'Information')" >nul 2>&1
@@ -22,14 +22,11 @@ set DESKTOP=%USERPROFILE%\Desktop\START AI - Albedo
 echo Updating bin files...
 if exist "%ALBEDO_DIR%\repo" rmdir /s /q "%ALBEDO_DIR%\repo"
 
-setlocal disabledelayedexpansion
 git clone https://github.com/TechnoClasher/Turboquant-LLAMA-Windows "%ALBEDO_DIR%\repo" --depth 1 --quiet
 if errorlevel 1 (
-    endlocal
     powershell -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Failed to fetch update. Check your internet connection and try again.', 'Albedo Upgrade', 'OK', 'Error')" >nul 2>&1
     exit /b 1
 )
-endlocal
 
 xcopy /E /I /Y "%ALBEDO_DIR%\repo\bin\*" "%BIN_DIR%\" >nul
 
