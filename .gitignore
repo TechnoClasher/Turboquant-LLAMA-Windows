@@ -1,7 +1,3 @@
-# Large CUDA runtime DLLs - downloaded at install time
-bin/cublas64_12.dll
-bin/cublasLt64_12.dll
-
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles

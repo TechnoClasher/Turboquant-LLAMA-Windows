@@ -33,11 +33,6 @@ if errorlevel 1 (
 :: Copy new bin
 xcopy /E /I /Y "%ALBEDO_DIR%\repo\bin\*" "%BIN_DIR%\" >nul
 
-:: Re-download CUDA runtime DLLs
-echo Updating CUDA runtime DLLs...
-python -m pip install nvidia-cublas-cu12 nvidia-cuda-runtime-cu12 --quiet
-python -c "import shutil, glob, os; bins = glob.glob(os.path.join(__import__('site').getsitepackages()[0], 'nvidia', 'cublas', 'bin', '*.dll')); [shutil.copy(f, r'%BIN_DIR%') for f in bins]"
-python -c "import shutil, glob, os; bins = glob.glob(os.path.join(__import__('site').getsitepackages()[0], 'nvidia', 'cuda_runtime', 'bin', '*.dll')); [shutil.copy(f, r'%BIN_DIR%') for f in bins]"
 
 powershell -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Update complete!`n`nYour AI engine has been updated. Your models are untouched.`nYou can now start Albedo as usual.', 'Albedo Update', 'OK', 'Information')" >nul 2>&1
 

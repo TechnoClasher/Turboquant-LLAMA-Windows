@@ -88,14 +88,6 @@ xcopy /E /I /Y "%ALBEDO_DIR%\repo\bin\*" "%BIN_DIR%\" >nul
 
 echo Repo cloned OK >> "%ALBEDO_DIR%\install.log"
 
-:: ============================================================
-::  DOWNLOAD CUDA RUNTIME DLLS via official NVIDIA PyPI packages
-:: ============================================================
-echo Downloading CUDA runtime DLLs (from official NVIDIA packages)...
-python -m pip install nvidia-cublas-cu12 nvidia-cuda-runtime-cu12 --quiet
-python -c "import shutil, glob, os; bins = glob.glob(os.path.join(__import__('site').getsitepackages()[0], 'nvidia', 'cublas', 'bin', '*.dll')); [shutil.copy(f, r'%BIN_DIR%') for f in bins]; print('cublas DLLs copied:', [os.path.basename(f) for f in bins])"
-python -c "import shutil, glob, os; bins = glob.glob(os.path.join(__import__('site').getsitepackages()[0], 'nvidia', 'cuda_runtime', 'bin', '*.dll')); [shutil.copy(f, r'%BIN_DIR%') for f in bins]; print('cudart DLLs copied:', [os.path.basename(f) for f in bins])"
-echo CUDA DLLs OK >> "%ALBEDO_DIR%\install.log"
 
 :: ============================================================
 ::  DOWNLOAD MODELS (skip if already present)
