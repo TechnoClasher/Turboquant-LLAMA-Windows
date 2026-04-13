@@ -24,11 +24,14 @@ echo Fetching latest files...
 if exist "%ALBEDO_DIR%\repo" (
     rmdir /s /q "%ALBEDO_DIR%\repo"
 )
+setlocal disabledelayedexpansion
 git clone https://github.com/TechnoClasher/Turboquant-LLAMA-Windows "%ALBEDO_DIR%\repo" --depth 1 --quiet
 if errorlevel 1 (
+    endlocal
     powershell -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Failed to download update. Check your internet connection and try again.', 'Albedo Update', 'OK', 'Error')" >nul 2>&1
     exit /b 1
 )
+endlocal
 
 :: Copy new bin
 xcopy /E /I /Y "%ALBEDO_DIR%\repo\bin\*" "%BIN_DIR%\" >nul

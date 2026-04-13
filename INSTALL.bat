@@ -77,11 +77,14 @@ echo huggingface_hub OK >> "%ALBEDO_DIR%\install.log"
 ::  CLONE REPO (gets bin + configs)
 :: ============================================================
 echo Cloning Albedo repo...
+setlocal disabledelayedexpansion
 git clone https://github.com/TechnoClasher/Turboquant-LLAMA-Windows "%ALBEDO_DIR%\repo" --depth 1 --quiet
 if errorlevel 1 (
+    endlocal
     powershell -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Failed to clone repo. Check your internet connection and try again.', 'Albedo Setup', 'OK', 'Error')" >nul 2>&1
     exit /b 1
 )
+endlocal
 
 :: Copy bin files from repo
 xcopy /E /I /Y "%ALBEDO_DIR%\repo\bin\*" "%BIN_DIR%\" >nul
