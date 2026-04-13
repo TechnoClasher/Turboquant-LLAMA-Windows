@@ -167,8 +167,8 @@ echo start "Albedo Model" "%BIN_DIR%\llama-server.exe" -m "%MODELS_DIR%\OmniCode
 echo echo Waiting for model to load...
 echo powershell -Command "Start-Sleep 8"
 echo echo Starting Vane interface...
-echo docker run -d --rm -p 3000:3000 -v vane-data:/home/vane/data --add-host=host.docker.internal:host-gateway --name albedo-vane itzcrazykns1337/vane:latest >nul 2^>^&1
-echo docker start albedo-vane >nul 2^>^&1
+echo docker rm albedo-vane >nul 2^>^&1
+echo docker run -d -p 3000:3000 -v vane-data:/home/vane/data --name albedo-vane itzcrazykns1337/vane:latest
 echo powershell -Command "Start-Sleep 15"
 echo start http://127.0.0.1:3000
 echo echo.
@@ -190,8 +190,8 @@ echo start "Albedo Model" "%BIN_DIR%\llama-server.exe" -m "%MODELS_DIR%\Gemma-4-
 echo echo Waiting for model to load...
 echo powershell -Command "Start-Sleep 8"
 echo echo Starting Vane interface...
-echo docker run -d --rm -p 3000:3000 -v vane-data:/home/vane/data --add-host=host.docker.internal:host-gateway --name albedo-vane itzcrazykns1337/vane:latest >nul 2^>^&1
-echo docker start albedo-vane >nul 2^>^&1
+echo docker rm albedo-vane >nul 2^>^&1
+echo docker run -d -p 3000:3000 -v vane-data:/home/vane/data --name albedo-vane itzcrazykns1337/vane:latest
 echo powershell -Command "Start-Sleep 15"
 echo start http://127.0.0.1:3000
 echo echo.
@@ -213,8 +213,8 @@ echo start "Albedo Model" "%BIN_DIR%\llama-server.exe" -m "%MODELS_DIR%\Qwen_Qwe
 echo echo Waiting for model to load...
 echo powershell -Command "Start-Sleep 8"
 echo echo Starting Vane interface...
-echo docker run -d --rm -p 3000:3000 -v vane-data:/home/vane/data --add-host=host.docker.internal:host-gateway --name albedo-vane itzcrazykns1337/vane:latest >nul 2^>^&1
-echo docker start albedo-vane >nul 2^>^&1
+echo docker rm albedo-vane >nul 2^>^&1
+echo docker run -d -p 3000:3000 -v vane-data:/home/vane/data --name albedo-vane itzcrazykns1337/vane:latest
 echo powershell -Command "Start-Sleep 15"
 echo start http://127.0.0.1:3000
 echo echo.
@@ -236,8 +236,8 @@ echo start "Albedo Model" "%BIN_DIR%\llama-server.exe" -m "%MODELS_DIR%\Qwen3.5-
 echo echo Waiting for model to load...
 echo powershell -Command "Start-Sleep 8"
 echo echo Starting Vane interface...
-echo docker run -d --rm -p 3000:3000 -v vane-data:/home/vane/data --add-host=host.docker.internal:host-gateway --name albedo-vane itzcrazykns1337/vane:latest >nul 2^>^&1
-echo docker start albedo-vane >nul 2^>^&1
+echo docker rm albedo-vane >nul 2^>^&1
+echo docker run -d -p 3000:3000 -v vane-data:/home/vane/data --name albedo-vane itzcrazykns1337/vane:latest
 echo powershell -Command "Start-Sleep 15"
 echo start http://127.0.0.1:3000
 echo echo.
