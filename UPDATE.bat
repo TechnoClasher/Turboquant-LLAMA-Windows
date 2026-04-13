@@ -21,19 +21,19 @@ echo Installing to: %ALBEDO_DIR%
 echo.
 
 :: ============================================================
-::  UPDATE BIN FROM REPO
+::  UPDATE BIN FROM REPO (disabled for now)
 :: ============================================================
-echo [1/5] Updating AI engine files...
-if exist "%ALBEDO_DIR%\repo" rmdir /s /q "%ALBEDO_DIR%\repo"
-git clone https://github.com/TechnoClasher/Turboquant-LLAMA-Windows "%ALBEDO_DIR%\repo" --depth 1
-if errorlevel 1 (
-    echo ERROR: Failed to fetch update from GitHub.
-    echo Check your internet connection and try again.
-    pause
-    exit /b 1
-)
-xcopy /E /I /Y "%ALBEDO_DIR%\repo\bin\*" "%BIN_DIR%\" >nul
-echo Engine updated.
+:: echo [1/5] Updating AI engine files...
+:: if exist "%ALBEDO_DIR%\repo" rmdir /s /q "%ALBEDO_DIR%\repo"
+:: git clone https://github.com/TechnoClasher/Turboquant-LLAMA-Windows "%ALBEDO_DIR%\repo" --depth 1
+:: if errorlevel 1 (
+::     echo ERROR: Failed to fetch update from GitHub.
+::     echo Check your internet connection and try again.
+::     pause
+::     exit /b 1
+:: )
+:: xcopy /E /I /Y "%ALBEDO_DIR%\repo\bin\*" "%BIN_DIR%\" >nul
+:: echo Engine updated.
 
 :: ============================================================
 ::  DOWNLOAD NEW MODEL - Gemma 4E4B
