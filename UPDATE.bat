@@ -172,7 +172,7 @@ echo title Albedo - Balanced Assistant
 echo echo Starting Albedo Balanced Assistant...
 echo echo.
 echo echo Starting AI model...
-echo start "Albedo Model" "%BIN_DIR%\llama-server.exe" -m "%MODELS_DIR%\Qwen_Qwen3.5-9B-Q6_K.gguf" -ngl 99 --reasoning off -fa 1 -ctk q8_0 -ctv turbo4 -c 32768 --host 127.0.0.1 --port 8080 -np 1
+echo start "Albedo Model" "%BIN_DIR%\llama-server.exe" -m "%MODELS_DIR%\Qwen_Qwen3.5-9B-Q4_K_M.gguf" -ngl 99 --reasoning off -fa 1 -ctk q8_0 -ctv turbo4 -c 32768 --host 127.0.0.1 --port 8080 -np 1
 echo echo Waiting for model to load...
 echo powershell -Command "Start-Sleep 8"
 echo echo Starting Vane interface...
@@ -187,6 +187,29 @@ echo pause ^>nul
 echo taskkill /f /fi "WINDOWTITLE eq Albedo Model" ^>nul 2^>^&1
 echo docker stop albedo-vane ^>nul 2^>^&1
 ) > "%DESKTOP%\For Balanced - Albedo.bat"
+
+:: --- Uncensored model (Qwen 4B) ---
+(
+echo @echo off
+echo title Albedo - Uncensored Assistant
+echo echo Starting Albedo Uncensored Assistant...
+echo echo.
+echo echo Starting AI model...
+echo start "Albedo Model" "%BIN_DIR%\llama-server.exe" -m "%MODELS_DIR%\Qwen3.5-4B-Uncensored-HauhauCS-Aggressive-Q8_0.gguf" -ngl 99 --reasoning off -fa 1 -ctk q8_0 -ctv turbo4 -c 32768 --host 127.0.0.1 --port 8080 -np 1
+echo echo Waiting for model to load...
+echo powershell -Command "Start-Sleep 8"
+echo echo Starting Vane interface...
+echo docker run -d --rm -p 3000:3000 -v vane-data:/home/vane/data --add-host=host.docker.internal:host-gateway --name albedo-vane itzcrazykns1337/vane:latest >nul 2^>^&1
+echo docker start albedo-vane >nul 2^>^&1
+echo powershell -Command "Start-Sleep 5"
+echo start http://127.0.0.1:3000
+echo echo.
+echo echo Albedo is running! Close this window to stop everything.
+echo echo.
+echo pause ^>nul
+echo taskkill /f /fi "WINDOWTITLE eq Albedo Model" ^>nul 2^>^&1
+echo docker stop albedo-vane ^>nul 2^>^&1
+) > "%DESKTOP%\For Uncensored - Albedo.bat"
 
 :: Remove old shortcuts
 del "%DESKTOP%\For Uncensored General - Albedo.bat" >nul 2>&1
