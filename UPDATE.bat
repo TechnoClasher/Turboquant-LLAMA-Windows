@@ -4,13 +4,22 @@ title Albedo Upgrade
 
 powershell -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Albedo Upgrade`n`nThis will:`n  - Download new Gemma 4B model (~6GB)`n  - Install Docker (if missing)`n  - Set up Vane AI search interface`n  - Update your desktop shortcuts`n`nYour existing models will NOT be deleted.`nMake sure no AI is currently running.', 'Albedo Upgrade', 'OK', 'Information')" >nul 2>&1
 
-:: Pick install folder
-for /f "delims=" %%i in ('powershell -Command "Add-Type -AssemblyName System.Windows.Forms; $f = New-Object System.Windows.Forms.FolderBrowserDialog; $f.Description = 'Select your Albedo install folder (the one containing models and bin folders)'; $f.RootFolder = [System.Environment+SpecialFolder]::MyComputer; if ($f.ShowDialog() -eq ''OK'') { Write-Output $f.SelectedPath } else { Write-Output ''CANCELLED'' }"') do set ALBEDO_DIR=%%i
+:: Pick install folder - write to temp file to avoid variable capture issues
+set PICKER_TMP=%TEMP%\albedo_pick.txt
+powershell -Command "Add-Type -AssemblyName System.Windows.Forms; $f = New-Object System.Windows.Forms.FolderBrowserDialog; $f.Description = 'Select your Albedo install folder (the one containing models and bin folders)'; $f.RootFolder = [System.Environment+SpecialFolder]::MyComputer; if ($f.ShowDialog() -eq 'OK') { $f.SelectedPath | Out-File -FilePath '%PICKER_TMP%' -Encoding ASCII -NoNewline } else { 'CANCELLED' | Out-File -FilePath '%PICKER_TMP%' -Encoding ASCII -NoNewline }"
+set /p ALBEDO_DIR=<"%PICKER_TMP%"
+del "%PICKER_TMP%" >nul 2>&1
 
 if "%ALBEDO_DIR%"=="CANCELLED" (
     echo Upgrade cancelled.
     pause
     exit /b 0
+)
+
+if "%ALBEDO_DIR%"=="" (
+    echo ERROR: No folder selected.
+    pause
+    exit /b 1
 )
 
 set MODELS_DIR=%ALBEDO_DIR%\models
